@@ -149,7 +149,7 @@ lock_acquire(struct lock *lock)
 	// assert(lock->value == 0);
 	// lock->value = 1;
 	splx(spl);
-	(void)lock;
+	// (void)lock;
 }
 
 void
