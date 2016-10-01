@@ -207,7 +207,7 @@ approachintersection(Car * car,
 }
 
 
-struct lock
+struct lock *
 dir_to_lock(int dir){
   if(dir==NW){
     return nw_lock;
@@ -254,10 +254,15 @@ createcars(int nargs,
         (void) nargs;
         (void) args;
 
-        nw_lock = lock_create("NW");
-        ne_lock = lock_create("NE");
-        sw_lock = lock_create("SW");
-        se_lock = lock_create("SE");
+        const char * nw = "NW";
+        const char * ne = "NE";
+        const char * sw = "SW";
+        const char * se = "SE";
+
+        nw_lock = lock_create(nw);
+        ne_lock = lock_create(ne);
+        sw_lock = lock_create(sw);
+        se_lock = lock_create(se);
 
         /*
          * Start NCARS approachintersection() threads.
