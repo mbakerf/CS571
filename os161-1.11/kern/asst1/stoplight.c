@@ -224,13 +224,13 @@ createcars(int nargs,
         for (index = 0; index < NCARS; index++) {
 
             Car car;
-            car->number = index;
-            car->approach = direction(rand() % 4);
-            car->dest = direction(rand() % 4);
-            car->action = action(rand() % 3);
+            car.number = index;
+            car.approach = direction(rand() % 4);
+            car.dest = direction(rand() % 4);
+            car.action = action(rand() % 3);
 
-            while(car->dest != car->approach){
-              car->dest = direction(rand() % 4);
+            while(car.dest != car.approach){
+              car.dest = direction(rand() % 4);
             }
 
 
