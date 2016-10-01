@@ -137,7 +137,7 @@ lock_acquire(struct lock *lock)
 	// kprintf("Making sure locks are not null %s", "123");
 	int spl;
 
-	// assert(lock != NULL);
+	assert(lock != NULL);
 
 	//
 	// assert(in_interrupt==0);
