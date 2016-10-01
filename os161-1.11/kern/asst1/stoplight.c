@@ -252,19 +252,19 @@ approachintersection(void * unusedpointer,
 
         if(cardirection==NW){
           lock_acquire(nw_lock);
-          kprintf("Entered NW: CarNum=%ul | ApproachDirection=%d | Action=%s\n", carnumber, cardirection);
+          kprintf("Entered NW: CarNum=%ul | ApproachDirection=%d | Action=%s\n", carnumber, cardirection, action_to_string(caraction));
         }
         else if(cardirection==NE){
           lock_acquire(ne_lock);
-          kprintf("Entered NE: CarNum=%ul | ApproachDirection=%d | Action=%s\n", carnumber, cardirection);
+          kprintf("Entered NE: CarNum=%ul | ApproachDirection=%d | Action=%s\n", carnumber, cardirection, action_to_string(caraction));
         }
         else if(cardirection==SW){
           lock_acquire(sw_lock);
-          kprintf("Entered SW: CarNum=%ul | ApproachDirection=%d | Action=%s\n", carnumber, cardirection);
+          kprintf("Entered SW: CarNum=%ul | ApproachDirection=%d | Action=%s\n", carnumber, cardirection, action_to_string(caraction));
         }
         else if(cardirection==SE){
           lock_acquire(se_lock);
-          kprintf("Entered SE: CarNum=%ul | ApproachDirection=%d | Action=%s\n", carnumber, cardirection);
+          kprintf("Entered SE: CarNum=%ul | ApproachDirection=%d | Action=%s\n", carnumber, cardirection, action_to_string(caraction));
         }
 
         if(caraction == 0){
