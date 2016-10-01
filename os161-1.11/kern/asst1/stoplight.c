@@ -19,14 +19,14 @@
 #include <test.h>
 #include <thread.h>
 
-typedef enum {SE, SW, NE, NW} direction;
-typedef enum {STRAIGHT, LEFT, RIGHT} action;
+typedef enum {SE, SW, NE, NW} Direction;
+typedef enum {STRAIGHT, LEFT, RIGHT} Action;
 
 typedef struct Cars {
   int number;
-  direction approach;
-  direction dest;
-  action action;
+  Direction approach;
+  Direction dest;
+  Action action;
 } Car;
 
 
@@ -225,12 +225,12 @@ createcars(int nargs,
 
             Car car;
             car.number = index;
-            car.approach = direction(rand() % 4);
-            car.dest = direction(rand() % 4);
-            car.action = action(rand() % 3);
+            car.approach = (Direction)Direction(rand() % 4);
+            car.dest = (Direction)Direction(rand() % 4);
+            car.action = (Action)Action(rand() % 3);
 
             while(car.dest != car.approach){
-              car.dest = direction(rand() % 4);
+              car.dest = (Direction)Direction(rand() % 4);
             }
 
 
