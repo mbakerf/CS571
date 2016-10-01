@@ -23,10 +23,10 @@ struct lock dir_to_lock(int dir);
 
 typedef enum {SE=0, SW=1, NE=2, NW=3} Direction;
 
-struct lock *nw_lock;
-struct lock *ne_lock;
-struct lock *sw_lock;
-struct lock *se_lock;
+static struct lock *nw_lock;
+static struct lock *ne_lock;
+static struct lock *sw_lock;
+static struct lock *se_lock;
 
 
 /*
@@ -185,7 +185,7 @@ approachintersection(void * unusedpointer,
         cardirection = random() % 4;
         caraction = random() % 3;
 
-        struct lock lock = dir_to_lock(cardirection);
+        struct lock *lock = dir_to_lock(cardirection);
         lock_acquire(lock);
 
         if(caraction == 0){
@@ -244,15 +244,10 @@ createcars(int nargs,
         (void) nargs;
         (void) args;
 
-        const char * nw = "NW";
-        const char * ne = "NE";
-        const char * sw = "SW";
-        const char * se = "SE";
-
-        nw_lock = lock_create(nw);
-        ne_lock = lock_create(ne);
-        sw_lock = lock_create(sw);
-        se_lock = lock_create(se);
+        nw_lock = lock_create("NW");
+        ne_lock = lock_create("NE");
+        sw_lock = lock_create("SW");
+        se_lock = lock_create("SE");
 
         /*
          * Start NCARS approachintersection() threads.
