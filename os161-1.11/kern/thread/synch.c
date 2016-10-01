@@ -143,7 +143,7 @@ lock_acquire(struct lock *lock)
 	while (lock->value==1) {
 	 	thread_sleep(curthread->t_sleepaddr);
 	}
-	assert(lock->value == 0);
+	// assert(lock->value == 0);
 	lock->value = 1;
 	splx(spl);
 	// (void)lock;
