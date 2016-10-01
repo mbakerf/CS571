@@ -144,7 +144,7 @@ lock_acquire(struct lock *lock)
 		lock->value = 1;
 	}
 
-	spl0();
+	splx(0);
 }
 
 void
