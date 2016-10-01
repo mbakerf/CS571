@@ -134,20 +134,21 @@ lock_destroy(struct lock *lock)
 void
 lock_acquire(struct lock *lock)
 {
-	kprintf("Making sure locks are not null");
-	int spl;
-	assert(lock != NULL);
-
-	assert(in_interrupt==0);
-
-	spl = splhigh();
-	while (lock->value==1) {
-		kprintf("Should be sleeping");
-		// thread_sleep(curthread->t_sleepaddr);
-	}
-	assert(lock->value == 0);
-	lock->value = 1;
-	splx(spl);
+	// kprintf("Making sure locks are not null");
+	// int spl;
+	// assert(lock != NULL);
+	//
+	// assert(in_interrupt==0);
+	//
+	// spl = splhigh();
+	// while (lock->value==1) {
+	// 	kprintf("Should be sleeping");
+	// 	// thread_sleep(curthread->t_sleepaddr);
+	// }
+	// assert(lock->value == 0);
+	// lock->value = 1;
+	// splx(spl);
+	(void)lock;
 }
 
 void
