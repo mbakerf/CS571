@@ -19,6 +19,8 @@
 #include <test.h>
 #include <thread.h>
 
+struct lock dir_to_lock(int dir);
+
 typedef enum {SE=0, SW=1, NE=2, NW=3} Direction;
 typedef enum {STRAIGHT, LEFT, RIGHT} Action;
 
@@ -191,7 +193,7 @@ approachintersection(Car * car,
 
         cardirection = random() % 4;
 
-        acquire_lock(dir_to_lock(cardirection));
+        lock_acquire(dir_to_lock(cardirection));
 
         if(car->action == STRAIGHT){
           gostraight(cardirection, car->approach);
