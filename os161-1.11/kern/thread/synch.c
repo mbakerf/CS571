@@ -142,10 +142,9 @@ lock_acquire(struct lock *lock)
 	assert(in_interrupt==0);
 
 	spl = splhigh();
-	// while (lock->value==1) {
-	// 	kprintf("Should be sleeping");
-	// 	// thread_sleep(curthread->t_sleepaddr);
-	// }
+	while (lock->value==1) {
+	 	// thread_sleep(curthread->t_sleepaddr);
+	}
 	// assert(lock->value == 0);
 	// lock->value = 1;
 	splx(spl);
