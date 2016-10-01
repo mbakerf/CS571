@@ -210,16 +210,16 @@ approachintersection(Car * car,
 struct lock *
 dir_to_lock(int dir){
   if(dir==NW){
-    return nw_lock;
+    return &nw_lock;
   }
   else if(dir==NE){
-    return ne_lock;
+    return &ne_lock;
   }
   else if(dir==SW){
-    return sw_lock;
+    return &sw_lock;
   }
   else if(dir==SE){
-    return se_lock;
+    return &se_lock;
   }
   else{
     return -1;
