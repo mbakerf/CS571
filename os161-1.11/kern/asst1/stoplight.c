@@ -19,8 +19,8 @@
 #include <test.h>
 #include <thread.h>
 
-enum direction = {SE, SW, NE, NW};
-enum action = {STRAIGHT, LEFT, RIGHT};
+enum direction {SE, SW, NE, NW};
+enum action {STRAIGHT, LEFT, RIGHT};
 
 struct car {
   int number;
@@ -228,7 +228,7 @@ createcars(int nargs,
             car->approach = direction(rand() % 4);
             car->dest = direction(rand() % 4);
             car->action = action(rand() % 3);
-            
+
             while(car->dest != car->approach){
               car->dest = direction(rand() % 4);
             }
