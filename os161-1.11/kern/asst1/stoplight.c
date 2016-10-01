@@ -19,8 +19,6 @@
 #include <test.h>
 #include <thread.h>
 
-// struct lock dir_to_lock(int dir);
-
 typedef enum {SE=0, SW=1, NE=2, NW=3} Direction;
 
 static struct lock *nw_lock;
@@ -73,17 +71,24 @@ gostraight(unsigned long cardirection,
 {
 
     if(cardirection == NW){
-
+      lock_acquire(sw_lock);
       cardirection = SW;
+      lock_release(nw_lock);
     }
     else if(cardirection == SW){
+      lock_acquire(se_lock);
       cardirection = SE;
+      lock_release(sw_lock);
     }
     else if(cardirection == SE){
+      lock_acquire(ne_lock);
       cardirection = NE;
+      lock_release(se_lock);
     }
     else if(cardirection == NE){
+      lock_acquire(nw_lock);
       cardirection = NW;
+      lock_release(ne_lock);
     }
 
 }
@@ -111,12 +116,22 @@ void
 turnleft(unsigned long cardirection,
          unsigned long carnumber)
 {
-        /*
-         * Avoid unused variable warnings.
-         */
-
-        (void) cardirection;
-        (void) carnumber;
+    if(cardirection == NW){
+      gostraight(cardirection, carnumber);
+      gostraight(SW, carnumber);
+    }
+    else if(cardirection == SW){
+      gostraight(cardirection, carnumber);
+      gostraight(SE, carnumber);
+    }
+    else if(cardirection == SE){
+      gostraight(cardirection, carnumber);
+      gostraight(NE, carnumber);
+    }
+    else if(cardirection == NE){
+      gostraight(cardirection, carnumber);
+      gostraight(NW, carnumber);
+    }
 }
 
 
@@ -142,12 +157,18 @@ void
 turnright(unsigned long cardirection,
           unsigned long carnumber)
 {
-        /*
-         * Avoid unused variable warnings.
-         */
-
-        (void) cardirection;
-        (void) carnumber;
+    if(cardirection == NW){
+      lock_release(nw_lock);
+    }
+    else if(cardirection == SW){
+      lock_release(sw_lock);
+    }
+    else if(cardirection == SE){
+      lock_release(se_lock);
+    }
+    else if(cardirection == NE){
+      lock_release(ne_lock);
+    }
 }
 
 
@@ -185,7 +206,19 @@ approachintersection(void * unusedpointer,
         cardirection = random() % 4;
         caraction = random() % 3;
 
-        lock_acquire(nw_lock);//dir_to_lock(cardirection));
+
+        if(cardirection==NW){
+          lock_acquire(nw_lock);
+        }
+        else if(cardirection==NE){
+          lock_acquire(ne_lock);
+        }
+        else if(cardirection==SW){
+          lock_acquire(sw_lock);
+        }
+        else if(cardirection==SE){
+          lock_acquire(se_lock);
+        }
 
         if(caraction == 0){
           gostraight(cardirection, carnumber);
@@ -198,21 +231,6 @@ approachintersection(void * unusedpointer,
         }
 }
 
-
-// struct lock* dir_to_lock(int dir){
-//   if(dir==NW){
-//     return &nw_lock;
-//   }
-//   else if(dir==NE){
-//     return &ne_lock;
-//   }
-//   else if(dir==SW){
-//     return &sw_lock;
-//   }
-//   else if(dir==SE){
-//     return &se_lock;
-//   }
-// }
 
 /*
  * createcars()
