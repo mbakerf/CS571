@@ -163,11 +163,7 @@ lock_release(struct lock *lock)
 int
 lock_do_i_hold(struct lock *lock)
 {
-	// Write this
-
-	(void)lock;  // suppress warning until code gets written
-
-	return 1;    // dummy until code gets written
+	return lock->value;
 }
 
 ////////////////////////////////////////////////////////////
