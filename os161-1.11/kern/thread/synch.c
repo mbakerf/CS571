@@ -133,48 +133,36 @@ lock_destroy(struct lock *lock)
 void
 lock_acquire(struct lock *lock)
 {
-	kprintf("ACQUIRE123!");
-	(void)lock;
-	// int m = splhigh();
-	//
-	// if(lock->value == 1){
-	// 	lock->thread_addr = &curthread;
-	// 	//assert(in_interrupt==0);
-	// 	thread_sleep(curthread);
-	// }else if(lock->value == 0){
-	// 	lock->value = 1;
-	// }
-	//
-	// splx(m);
+	int spl;
+	assert(lock != NULL);
+
+	assert(in_interrupt==0);
+
+	spl = splhigh();
+	while (lock->value==0) {
+		thread_sleep(curthread);
+	}
+	assert(lock->value>0);
+	lock->value--;
+	splx(spl);
 }
 
 void
 lock_release(struct lock *lock)
 {
-	kprintf("RELEASE123!");
-	(void)lock;
-	// int m = splhigh();
-	//
-	// if(lock->value == 1){
-	// 	lock->value = 0;
-	// }else if(lock->value == 0){
-	// 	thread_wakeup(lock->thread_addr);
-	// }
-	//
-	// splx(m);
+	// Write this
+
+	(void)lock;  // suppress warning until code gets written
 }
 
 int
 lock_do_i_hold(struct lock *lock)
 {
-	kprintf("LOCK_DO_I_HOLD123!");
-	(void)lock;
-	// if(lock->value == 1){
-	// 	return 1;
-	// }else{
-	// 	return 0;
-	// }
-	return 1;
+	// Write this
+
+	(void)lock;  // suppress warning until code gets written
+
+	return 1;    // dummy until code gets written
 }
 
 ////////////////////////////////////////////////////////////
