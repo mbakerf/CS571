@@ -203,7 +203,7 @@ turnright(unsigned long cardirection,
 {
     if(cardirection == NW){
       lock_release(nw_lock);
-      kprintf("Leaving NW: CarNum=%ul | ApproachDirection=%s\n | Action=Right", carnumber, direction_to_string(cardirection));
+      kprintf("Leaving NW: CarNum=%ul | ApproachDirection=%s\n | Action=Right\n", carnumber, direction_to_string(cardirection));
     }
     else if(cardirection == SW){
       kprintf("Leaving SW: CarNum=%ul | ApproachDirection=%s | Action=Right\n", carnumber, direction_to_string(cardirection));
