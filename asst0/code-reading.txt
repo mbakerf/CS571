@@ -1,0 +1,62 @@
+Brandon M. Wagner
+G00630335
+CS 571 - Fall 2016
+OS 161 - Asst 0
+----------------------
+
+Question 1: Which register number is used for the stack pointer (sp) in OS/161? How do you know? Explain your answer:
+
+Answer: Register number twenty-nine (29) is used for the stack pointer. This is defined in "include/asmdefs.h" where all general registers are defined as constants.
+
+Question 2: What bus/buses does OS/161 support? How do you know? Explain your answer:
+
+Answer: OS/161 supports only the LAMEbus as definied in "include/bus.h" header file. This file includes definitions of an interface to the LameBus and a comment explaining that the LameBus is the only supported bus.
+
+Question 3: What is the difference between splhigh and spl0? Explain:
+
+Answer: splhigh sets spl (set priority level to the highest value possible which will block ALL interrupts. spl0 sets spl to the lowest possible value, thus enabling all interupts. This can be found in spl.h where SPL_HIGH is set to 15.
+
+Question 4: What are some of the details which would make a function "machine dependent"? Why might it be important to maintain this separation, instead of just putting all of the code in one function?
+
+Answer: A function would be machine depedent if it relied on some specific hardware feature, interface, or configuration. For example, the pcb.c file implements a machine dependent function called md_switch which performs a thread context switch. Performing this context switch requires the function to know what registers it needs to save which were setup by other machine dependent functions in the mips subdirectory such as start.S and hardware specific types (size of registers to handle integers and floating point.  
+
+It's useful to separate these functions to provide an easy plugin change point for different hardware sets.
+
+Question 5: What does splx return? How did you get your answer? Explain:
+
+Answer: The splx function returns the integer value of the old spl value (the curspl when calling the function). This is found in int splx(int newspl) in file spl.c.
+
+Question 6: What is the highest interrupt level? How did you get your answer?
+
+Answer: The highest interrupt level is 15 as definited by SPL_HIGH in spl.h.
+
+Question 7: How frequently are hardclock interrupts generated? How do you know? Explain:
+
+Answer: Hardclock interrupts are generated every 100 seconds (usually), if OPT_SYNCHPROBS is defined then, they will occur 1000 times per second. This is definied in clock.h .
+
+Question 8: How large are OS/161 pids (process identifiers)? How many processes do you think OS/161 could support as you have it now? A sentence or two for justification is fine:
+
+Answer: pid_t is defined as a type in kern/include/kern/types.h as an int32_t. This means that it can hold positive values from [0, (2^32 / 2) -1] since process ids can only be positive, the OS could pot
+entially support 2,147,483,647 processes.
+
+Question 9: What is the system call number for a reboot? Is this value available to userspace programs? Why or why not?
+
+Answer: Reboot is system call number 8 (SYS_reboot) defined in kern/callno.h. Yes, these sys call numbers are available to user programs. When the OS is built, the kern includes go into "hostinclude/kern". 
+
+Question 10: What is the purpose of functions like copyin and copyout in copyinout.c? What do they protect against? Where might you want to use these functions?
+
+Answer: Functions like copyin and copyout are used to copy memory from a user memory space to a kernel memory space or from kernel space to user space. They are used to protect against kernel errors that would crash the whole OS rather than erroring out when a user supplies a bad address (doesn't exist or not accessible). You would want to use these functions when user programs are supplying memory addresses. 
+
+Question 11: Is it OK to initialize the thread system before the scheduler? Why (not)?
+
+Answer: Yes, each respective bootstrap does not depend on each other. The scheduler only creates the queues. Threading could be bootstrapped first, scheduler init'd and then the thread could be placed on a scheduler queue.
+
+Question 12: What are the possible states that a thread can be in? When do "zombie" threads finally get cleaned up? How did you obtain your answer. Explain?
+
+Answer: Threads can be in S_RUN, S_READY, S_SLEEP, or S_ZOMB states. Zombie threads get cleaned up through the exorcise function (which in-turn call thread_destroy) which is called in mi_switch when context switching to a previously active thread. This answer was obtained by looking through the thread.c function.
+
+Question 13: What function puts a thread to sleep? When might you want to use this function?
+
+Answer: thread_sleep() puts a thread to sleep in thread.c. You would want to put a thread to sleep to give up the cpu to another thread until thread_wakeup() is called. 
+
+## DONE
