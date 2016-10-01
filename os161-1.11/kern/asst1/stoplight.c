@@ -225,9 +225,9 @@ createcars(int nargs,
 
             Car car;
             car.number = index;
-            car.approach = (Direction)Direction(rand() % 4);
-            car.dest = (Direction)Direction(rand() % 4);
-            car.action = (Action)Action(rand() % 3);
+            car.approach = NW;
+            car.dest = SW;
+            car.action = STRAIGHT;
 
             while(car.dest != car.approach){
               car.dest = (Direction)Direction(rand() % 4);
