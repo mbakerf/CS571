@@ -206,6 +206,7 @@ approachintersection(void * unusedpointer,
         cardirection = random() % 4;
         caraction = random() % 3;
 
+        kprintf("CarNum=%ul | ApproachDirection=%d", carnumber, cardirection);
 
         if(cardirection==NW){
           lock_acquire(nw_lock);
