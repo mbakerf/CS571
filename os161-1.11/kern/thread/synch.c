@@ -136,12 +136,11 @@ lock_acquire(struct lock *lock)
 {
 	// kprintf("Making sure locks are not null %s", "123");
 	int spl;
-
 	assert(lock != NULL);
 
-	//
-	// assert(in_interrupt==0);
-	//
+
+	assert(in_interrupt==0);
+
 	// spl = splhigh();
 	// while (lock->value==1) {
 	// 	kprintf("Should be sleeping");
