@@ -165,12 +165,12 @@ turnright(unsigned long cardirection,
 
 static
 void
-approachintersection(void * car,
+approachintersection(Car * car,
                      unsigned long carnumber)
 {
         int cardirection;
 
-        kprintf("CAR: \nnumber:%d\napproach: %s\n", *car->number, *car->approach);
+        kprintf("CAR: \nnumber:%d\napproach: %s\n", car->number, car->approach);
 
         /*
          * Avoid unused variable and function warnings.
