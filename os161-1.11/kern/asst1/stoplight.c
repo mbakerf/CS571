@@ -22,6 +22,11 @@
 typedef enum {SE=0, SW=1, NE=2, NW=3} Direction;
 typedef enum {STRAIGHT, LEFT, RIGHT} Action;
 
+struct lock nw_lock;
+struct lock ne_lock;
+struct lock sw_lock;
+struct lock se_lock;
+
 typedef struct Cars {
   int number;
   Direction approach;
@@ -72,12 +77,21 @@ void
 gostraight(unsigned long cardirection,
            unsigned long carnumber)
 {
-        /*
-         * Avoid unused variable warnings.
-         */
 
-        (void) cardirection;
-        (void) carnumber;
+    if(cardirection == NW){
+
+      cardirection = SW;
+    }
+    else if(cardirection == SW){
+      cardirection = SE;
+    }
+    else if(cardirection == SE){
+      cardirection = NE;
+    }
+    else if(cardirection == NE){
+      cardirection = NW;
+    }
+
 }
 
 
@@ -170,11 +184,14 @@ approachintersection(Car * car,
 {
         int cardirection;
 
+
         /*
          * cardirection is set randomly.
          */
 
         cardirection = random() % 4;
+
+        acquire_lock(dir_to_lock(cardirection));
 
         if(car->action == STRAIGHT){
           gostraight(cardirection, car->approach);
@@ -187,6 +204,25 @@ approachintersection(Car * car,
         }
 }
 
+
+struct lock
+dir_to_lock(int dir){
+  if(dir==NW){
+    return nw_lock;
+  }
+  else if(dir==NE){
+    return ne_lock;
+  }
+  else if(dir==SW){
+    return sw_lock;
+  }
+  else if(dir==SE){
+    return se_lock;
+  }
+  else{
+    return -1;
+  }
+}
 
 /*
  * createcars()
@@ -216,6 +252,10 @@ createcars(int nargs,
         (void) nargs;
         (void) args;
 
+        nw_lock = lock_create("NW");
+        ne_lock = lock_create("NE");
+        sw_lock = lock_create("SW");
+        se_lock = lock_create("SE");
 
         /*
          * Start NCARS approachintersection() threads.
