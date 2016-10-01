@@ -18,6 +18,7 @@
 #include <lib.h>
 #include <test.h>
 #include <thread.h>
+#include <stdio.h>
 
 typedef enum {SE, SW, NE, NW} Direction;
 typedef enum {STRAIGHT, LEFT, RIGHT} Action;
@@ -170,7 +171,7 @@ approachintersection(Car * car,
 {
         int cardirection;
 
-        kprintf("CAR: \nnumber:\napproach: \n");
+        printf("CAR: \nnumber:\napproach: \n");
 
         /*
          * Avoid unused variable and function warnings.
