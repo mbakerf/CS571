@@ -22,12 +22,12 @@
 typedef enum {SE, SW, NE, NW} direction;
 typedef enum {STRAIGHT, LEFT, RIGHT} action;
 
-struct car {
+typedef struct Cars {
   int number;
   direction approach;
   direction dest;
   action action;
-}
+} Car;
 
 
 /*
@@ -223,7 +223,7 @@ createcars(int nargs,
 
         for (index = 0; index < NCARS; index++) {
 
-            struct car;
+            Car car;
             car->number = index;
             car->approach = direction(rand() % 4);
             car->dest = direction(rand() % 4);
