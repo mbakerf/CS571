@@ -1,0 +1,40 @@
+Question 1. What happens to a thread when it exits (i.e., calls thread_exit())? What about when it sleeps?
+
+Answer: When a thread calls thread_exit, it makes sure the stack hasn't overflown by checking the magic numbers on the bottom of the stack, turns interrupts off by calling splhigh(), checks the address and removes the thread from virtual memory, sets the cwd (current working directory) to NULL of the thread, decreases the number of active threads and switches the thread to ZOMB (zombie) state. When the thread calls thread_sleep, it yields the cpu to another process and switches to SLEEP state. It also makes sure interrupts are off to avoid sleeping forever. 
+
+Question 2. What function(s) handle(s) a context switch?
+
+Answer: mi_switch and md_switch
+
+Question 3. What does it mean for a thread to be in each of the possible thread states?
+
+Answer: When a thread is in the RUN state, it is currently executing on the CPU. When a thread is in the READY state, it is ready to be transitioned to the RUN state. When a thread is in SLEEP state, it is taken out of DRAM and must be woken up to be copied back to DRAM and placed in the READY queue. When a thread is in ZOMB state, the thread has exited but has not been cleaned up by the exorcism function.
+
+Question 4. What does it mean to turn interrupts off? How is this accomplished? Why is it important to turn off interrupts in the thread subsystem code?
+
+Answer: It means the interrupts handler won't call an interrupt even if an interrupt occurs. Interrupts are turned off by calling splhigh() which uses the constant splhigh to call splx(). splx() checks for splhigh (for interrupts off) and constant 0 for interrupts on, and calls the corresponding functions interrupts_on() and interrupts_off() which sets the status registers using gcc's assembly feature. It is important to turn off interrupts in the thread subcode to ensure atomicity (operations aren't switched in the middle of execution). This could be problematic during a context switch or other operation where registers are being copied. All registers must be copied before execution can switch.
+
+Question 5. What happens when a thread wakes up another thread? How does a sleeping thread get to run again?
+
+Answer: When a thread calls the thread_wakeup, it gets the sleeping thread from the array of sleeping threads, removes it from the array and calls make_runnable on it. A sleeping thread gets to run again when mi_switch is called. Within the mi_switch, the scheduler gets called and the scheduler will return the thread that gets to run.
+
+Question 6. What function is responsible for choosing the next thread to run?
+
+Answer: Scheduler(void)
+
+Question 7. How does that function pick the next thread?
+
+Answer: By default, the scheduler implements a round-robin run queue (this can also be seen by taking out the commented print statement within the scheduler function).
+
+Question 8. What role does the hardware timer play in scheduling? What hardware independent function is called on a timer interrupt?
+
+Answer: It calls the hardclock(void) function and HZ times a second, thread_yield is called which calls mi_switch.
+
+Question 9. Describe how thread_sleep() and thread_wakeup() are used to implement semaphores. What is the purpose of the argument passed to thread_sleep()?
+
+Answer: thread_sleep is used to make the current thread wait and thread_wakeup is used as a signal to wake up threads waiting. The argument is the semaphore the sleeping threads use to also wake up.
+
+Question 10. Why does the lock API in OS/161 provide lock_do_i_hold(), but not lock_get_holder()?
+
+Answer: Because only one thread can use a lock and the curthread variable already holds the currently executing thread which would be the same one holding the lock if lock_do_i_hold is true.
+
