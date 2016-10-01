@@ -6,13 +6,17 @@ OS161 is a minimal operating system for educational purposes. It runs on a machi
 ## Build
 
 `cd os161-1.11/kern/conf`
+
 `./config ASSTx # where x is the assignment number`
 
 ## Compile
 
 `cd os161-1.11/kern/compile/ASSTx # where x is the assignment number`
+
 `make depend`
+
 `make`
+
 `make install`
 
 
