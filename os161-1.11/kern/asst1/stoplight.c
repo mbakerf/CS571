@@ -230,7 +230,7 @@ createcars(int nargs,
             car.action = STRAIGHT;
 
             while(car.dest != car.approach){
-              car.dest = (Direction)Direction(rand() % 4);
+              car.dest = SE;
             }
 
 
