@@ -136,13 +136,13 @@ lock_acquire(struct lock *lock)
 	kprintf("ACQUIRE!");
 	int m = splhigh();
 
-	// if(lock->value == 1){
-	// 	lock->thread_addr = &curthread;
-	// 	//assert(in_interrupt==0);
-	// 	thread_sleep(curthread);
-	// }else if(lock->value == 0){
-	// 	lock->value = 1;
-	// }
+	if(lock->value == 1){
+		lock->thread_addr = &curthread;
+		//assert(in_interrupt==0);
+		thread_sleep(curthread);
+	}else if(lock->value == 0){
+		lock->value = 1;
+	}
 
 	splx(m);
 }
@@ -153,11 +153,11 @@ lock_release(struct lock *lock)
 	kprintf("RELEASE!");
 	int m = splhigh();
 
-	// if(lock->value == 1){
-	// 	lock->value = 0;
-	// }else if(lock->value == 0){
-	// 	thread_wakeup(lock->thread_addr);
-	// }
+	if(lock->value == 1){
+		lock->value = 0;
+	}else if(lock->value == 0){
+		thread_wakeup(lock->thread_addr);
+	}
 
 	splx(m);
 }
