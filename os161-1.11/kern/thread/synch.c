@@ -138,7 +138,7 @@ lock_acquire(struct lock *lock)
 
 	if(lock->value == 1){
 		lock->thread_addr = &curthread;
-		assert(in_interrupt==0);
+		//assert(in_interrupt==0);
 		thread_sleep(curthread);
 	}else if(lock->value == 0){
 		lock->value = 1;
