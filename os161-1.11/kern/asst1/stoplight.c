@@ -185,8 +185,7 @@ approachintersection(void * unusedpointer,
         cardirection = random() % 4;
         caraction = random() % 3;
 
-        struct lock *lock = dir_to_lock(cardirection);
-        lock_acquire(lock);
+        lock_acquire(dir_to_lock(cardirection));
 
         if(caraction == 0){
           gostraight(cardirection, carnumber);
