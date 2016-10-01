@@ -1,4 +1,4 @@
-/* 
+/*
  * stoplight.c
  *
  * 31-1-2003 : GWA : Stub functions created for CS161 Asst1.
@@ -9,7 +9,7 @@
 
 
 /*
- * 
+ *
  * Includes
  *
  */
@@ -18,6 +18,16 @@
 #include <lib.h>
 #include <test.h>
 #include <thread.h>
+
+enum direction = {SE, SW, NE, NW};
+enum action = {STRAIGHT, LEFT, RIGHT};
+
+struct car {
+  int number;
+  direction approach;
+  direction dest;
+  action action;
+}
 
 
 /*
@@ -65,7 +75,7 @@ gostraight(unsigned long cardirection,
         /*
          * Avoid unused variable warnings.
          */
-        
+
         (void) cardirection;
         (void) carnumber;
 }
@@ -83,7 +93,7 @@ gostraight(unsigned long cardirection,
  *      nothing.
  *
  * Notes:
- *      This function should implement making a left turn through the 
+ *      This function should implement making a left turn through the
  *      intersection from any direction.
  *      Write and comment this function.
  */
@@ -114,7 +124,7 @@ turnleft(unsigned long cardirection,
  *      nothing.
  *
  * Notes:
- *      This function should implement making a right turn through the 
+ *      This function should implement making a right turn through the
  *      intersection from any direction.
  *      Write and comment this function.
  */
@@ -136,7 +146,7 @@ turnright(unsigned long cardirection,
 /*
  * approachintersection()
  *
- * Arguments: 
+ * Arguments:
  *      void * unusedpointer: currently unused.
  *      unsigned long carnumber: holds car id number.
  *
@@ -152,7 +162,7 @@ turnright(unsigned long cardirection,
  *      or going straight should be done by calling one of the functions
  *      above.
  */
- 
+
 static
 void
 approachintersection(void * unusedpointer,
@@ -206,6 +216,8 @@ createcars(int nargs,
         (void) nargs;
         (void) args;
 
+        kprintf("nargs == %d", nargs);
+
         /*
          * Start NCARS approachintersection() threads.
          */
@@ -224,7 +236,7 @@ createcars(int nargs,
                  */
 
                 if (error) {
-                        
+
                         panic("approachintersection: thread_fork failed: %s\n",
                               strerror(error)
                               );
