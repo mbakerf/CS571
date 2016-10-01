@@ -29,7 +29,7 @@ static struct lock *ne_lock;
 static struct lock *sw_lock;
 static struct lock *se_lock;
 
-static count_straight = 0;
+static intersection_count = 0;
 
 
 /*
@@ -78,7 +78,7 @@ gostraight(unsigned long cardirection,
       lock_acquire(sw_lock);
       cardirection = SW;
       kprintf("Leaving NW: CarNum=%lu | ApproachDirection=%s | Action=Straight\n\
-      Entering SW: CarNum=%lu | ApproachDirection=%s | Action=Straight\n",
+Entering SW: CarNum=%lu | ApproachDirection=%s | Action=Straight\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(nw_lock);
       kprintf("Leaving SW: CarNum=%lu | ApproachDirection=%s | Action=Straight\n", carnumber, direction_to_string(cardirection));
@@ -88,7 +88,7 @@ gostraight(unsigned long cardirection,
       lock_acquire(se_lock);
       cardirection = SE;
       kprintf("Leaving SW: CarNum=%lu | ApproachDirection=%s | Action=Straight\n\
-      Entering SE: CarNum=%lu | ApproachDirection=%s | Action=Straight\n",
+Entering SE: CarNum=%lu | ApproachDirection=%s | Action=Straight\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(sw_lock);
       kprintf("Leaving SE: CarNum=%lu | ApproachDirection=%s | Action=Straight\n", carnumber, direction_to_string(cardirection));
@@ -98,7 +98,7 @@ gostraight(unsigned long cardirection,
       lock_acquire(ne_lock);
       cardirection = NE;
       kprintf("Leaving SE: CarNum=%lu | ApproachDirection=%s | Action=Straight\n\
-      Entering NE: CarNum=%lu | ApproachDirection=%s | Action=Straight\n",
+Entering NE: CarNum=%lu | ApproachDirection=%s | Action=Straight\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(se_lock);
       kprintf("Leaving NE: CarNum=%lu | ApproachDirection=%s | Action=Straight\n", carnumber, direction_to_string(cardirection));
@@ -108,14 +108,14 @@ gostraight(unsigned long cardirection,
       lock_acquire(nw_lock);
       cardirection = NW;
       kprintf("Leaving NE: CarNum=%lu | ApproachDirection=%s | Action=Straight\n\
-      Entering NW: CarNum=%lu | ApproachDirection=%s | Action=Straight\n",
+Entering NW: CarNum=%lu | ApproachDirection=%s | Action=Straight\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(ne_lock);
       kprintf("Leaving NW: CarNum=%lu | ApproachDirection=%s | Action=Straight\n", carnumber, direction_to_string(cardirection));
       lock_release(nw_lock);
     }
 
-    count_straight--;
+    intersection_count--;
 
 }
 
@@ -148,12 +148,12 @@ turnleft(unsigned long cardirection,
       lock_acquire(sw_lock);
       cardirection = SW;
       kprintf("Leaving NW: CarNum=%lu | ApproachDirection=%s | Action=Left\n\
-      Entering SW: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
+Entering SW: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(nw_lock);
       lock_acquire(se_lock);
       kprintf("Leaving SW: CarNum=%lu | ApproachDirection=%s | Action=Left\n\
-      Entering SE: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
+Entering SE: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(sw_lock);
       kprintf("Leaving SE: CarNum=%lu | ApproachDirection=%s | Action=Left\n", carnumber, direction_to_string(cardirection));
@@ -163,12 +163,12 @@ turnleft(unsigned long cardirection,
       lock_acquire(se_lock);
       cardirection = SE;
       kprintf("Leaving SW: CarNum=%lu | ApproachDirection=%s | Action=Left\n\
-      Entering SE: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
+Entering SE: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(sw_lock);
       lock_acquire(ne_lock);
       kprintf("Leaving SE: CarNum=%lu | ApproachDirection=%s | Action=Left\n\
-      Entering NE: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
+Entering NE: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(se_lock);
       kprintf("Leaving NE: CarNum=%lu | ApproachDirection=%s | Action=Left\n", carnumber, direction_to_string(cardirection));
@@ -178,12 +178,12 @@ turnleft(unsigned long cardirection,
       lock_acquire(ne_lock);
       cardirection = NE;
       kprintf("Leaving SE: CarNum=%lu | ApproachDirection=%s | Action=Left\n\
-      Entering NE: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
+Entering NE: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(se_lock);
       lock_acquire(nw_lock);
       kprintf("Leaving NE: CarNum=%lu | ApproachDirection=%s | Action=Left\n\
-      Entering NW: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
+Entering NW: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(ne_lock);
       kprintf("Leaving NW: CarNum=%lu | ApproachDirection=%s | Action=Left\n", carnumber, direction_to_string(cardirection));
@@ -193,19 +193,19 @@ turnleft(unsigned long cardirection,
       lock_acquire(nw_lock);
       cardirection = NW;
       kprintf("Leaving NE: CarNum=%lu | ApproachDirection=%s | Action=Left\n\
-      Entering NW: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
+Entering NW: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(ne_lock);
       lock_acquire(sw_lock);
       kprintf("Leaving NW: CarNum=%lu | ApproachDirection=%s | Action=Left\n\
-      Entering SW: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
+Entering SW: CarNum=%lu | ApproachDirection=%s | Action=Left\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(nw_lock);
       kprintf("Leaving SW: CarNum=%lu | ApproachDirection=%s | Action=Left\n", carnumber, direction_to_string(cardirection));
       lock_release(sw_lock);
     }
 
-    count_straight--;
+    intersection_count--;
 }
 
 
@@ -233,25 +233,25 @@ turnright(unsigned long cardirection,
 {
     if(cardirection == NW){
       kprintf("Entered NW: CarNum=%lu | ApproachDirection=%s | Action=Right\n\
-      Leaving NW: CarNum=%lu | ApproachDirection=%s | Action=Right\n",
+Leaving NW: CarNum=%lu | ApproachDirection=%s | Action=Right\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(nw_lock);
     }
     else if(cardirection == SW){
       kprintf("Entered SW: CarNum=%lu | ApproachDirection=%s | Action=Right\n\
-      Leaving SW: CarNum=%lu | ApproachDirection=%s | Action=Right\n",
+Leaving SW: CarNum=%lu | ApproachDirection=%s | Action=Right\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(sw_lock);
     }
     else if(cardirection == SE){
       kprintf("Entered SE: CarNum=%lu | ApproachDirection=%s | Action=Right\n\
-      Leaving SE: CarNum=%lu | ApproachDirection=%s | Action=Right\n",
+Leaving SE: CarNum=%lu | ApproachDirection=%s | Action=Right\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(se_lock);
     }
     else if(cardirection == NE){
       kprintf("Entered NE: CarNum=%lu | ApproachDirection=%s | Action=Right\n\
-      Leaving NE: CarNum=%lu | ApproachDirection=%s | Action=Right\n",
+Leaving NE: CarNum=%lu | ApproachDirection=%s | Action=Right\n",
                 carnumber, direction_to_string(cardirection), carnumber, direction_to_string(cardirection));
       lock_release(ne_lock);
     }
@@ -293,47 +293,42 @@ approachintersection(void * unusedpointer,
         caraction = 1;//random() % 3;
 
         int m = splhigh();
+        while(1){
 
-        if(cardirection==NW){
-          if((caraction == 0 || caraction == 1) && count_straight < 3){
-              kprintf("Approaching: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
-              lock_acquire(nw_lock);
-              count_straight++;
-              kprintf("Entered NW: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
-            }else{
-              approachintersection(NULL, carnumber);
+          if(intersection_count < 3){
+
+            if(cardirection==NW){
+                kprintf("Approaching: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+                lock_acquire(nw_lock);
+                intersection_count++;
+                kprintf("Entered NW: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
             }
-        }
-        else if(cardirection==NE){
-          if((caraction == 0 || caraction == 1) && count_straight < 3){
+            else if(cardirection==NE){
+                kprintf("Approaching: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+                lock_acquire(ne_lock);
+                intersection_count++;
+                kprintf("Entered NE: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+            }
+            else if(cardirection==SW){
               kprintf("Approaching: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
-              lock_acquire(ne_lock);
-              count_straight++;
-              kprintf("Entered NE: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+              lock_acquire(sw_lock);
+              intersection_count++;
+              kprintf("Entered SW: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+            }
+            else if(cardirection==SE){
+              kprintf("Approaching: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+              lock_acquire(se_lock);
+              intersection_count++;
+              kprintf("Entered SE: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+            }
+
+            break;
           }else{
-            approachintersection(NULL, carnumber);
+            splx(m);
           }
         }
-        else if(cardirection==SW){
-          if((caraction == 0 || caraction == 1) && count_straight < 3){
-            kprintf("Approaching: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
-            lock_acquire(sw_lock);
-            count_straight++;
-            kprintf("Entered SW: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
-          }else{
-            approachintersection(NULL, carnumber);
-          }
-        }
-        else if(cardirection==SE){
-          if((caraction == 0 || caraction == 1) && count_straight < 3){
-            kprintf("Approaching: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
-            lock_acquire(se_lock);
-            count_straight++;
-            kprintf("Entered SE: CarNum=%lu | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
-          }else{
-            approachintersection(NULL, carnumber);
-          }
-        }
+
+
 
         splx(m);
 
