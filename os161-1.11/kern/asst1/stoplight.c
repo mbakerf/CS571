@@ -22,19 +22,11 @@
 struct lock dir_to_lock(int dir);
 
 typedef enum {SE=0, SW=1, NE=2, NW=3} Direction;
-typedef enum {STRAIGHT, LEFT, RIGHT} Action;
 
 struct lock nw_lock;
 struct lock ne_lock;
 struct lock sw_lock;
 struct lock se_lock;
-
-typedef struct Cars {
-  int number;
-  Direction approach;
-  Direction dest;
-  Action action;
-} Car;
 
 
 /*
@@ -185,25 +177,24 @@ approachintersection(Car * car,
                      unsigned long carnumber)
 {
         int cardirection;
-
-
         /*
          * cardirection is set randomly.
          */
 
         cardirection = random() % 4;
+        caraction = random() % 3;
 
         struct lock = dir_to_lock(cardirection);
         lock_acquire(lock);
 
-        if(car->action == STRAIGHT){
-          gostraight(cardirection, car->approach);
+        if(caraction == 0){
+          gostraight(cardirection, carnumber);
         }
-        else if(car->action == LEFT){
-          turnleft(cardirection, car->approach);
+        else if(caraction == 1){
+          turnleft(cardirection, carnumber);
         }
-        else if(car->action == RIGHT){
-          turnright(cardirection, car->approach);
+        else if(caraction == 2){
+          turnright(cardirection, carnumber);
         }
 }
 
@@ -267,11 +258,6 @@ createcars(int nargs,
          */
 
         for (index = 0; index < NCARS; index++) {
-
-            Car car;
-            car.number = index;
-            car.approach = NW;
-            car.action = STRAIGHT;
 
 
             error = thread_fork("approachintersection thread",
