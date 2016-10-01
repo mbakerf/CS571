@@ -51,7 +51,7 @@ sem_destroy(struct semaphore *sem)
 	 * the semaphore after the above test but before we free it,
 	 * if they're going to do that, they can just as easily wait
 	 * a bit and start sleeping on the semaphore after it's been
-	 * freed. Consequently, there's not a whole lot of point in 
+	 * freed. Consequently, there's not a whole lot of point in
 	 * including the kfrees in the splhigh block, so we don't.
 	 */
 
@@ -59,7 +59,7 @@ sem_destroy(struct semaphore *sem)
 	kfree(sem);
 }
 
-void 
+void
 P(struct semaphore *sem)
 {
 	int spl;
@@ -113,9 +113,9 @@ lock_create(const char *name)
 		kfree(lock);
 		return NULL;
 	}
-	
+
 	// add stuff here as needed
-	
+
 	return lock;
 }
 
@@ -125,7 +125,7 @@ lock_destroy(struct lock *lock)
 	assert(lock != NULL);
 
 	// add stuff here as needed
-	
+
 	kfree(lock->name);
 	kfree(lock);
 }
@@ -133,27 +133,39 @@ lock_destroy(struct lock *lock)
 void
 lock_acquire(struct lock *lock)
 {
-	// Write this
+	int m = splhigh();
 
-	(void)lock;  // suppress warning until code gets written
+	if(lock->value == 1){
+		lock->thread_addr = thread_sleep(curthread);
+	}else if(lock->value == 0){
+		lock->value = 1;
+	}
+
+	splx(m);
 }
 
 void
 lock_release(struct lock *lock)
 {
-	// Write this
+	int m = splhigh();
 
-	(void)lock;  // suppress warning until code gets written
+	if(lock->value == 1){
+		lock->value = 0;
+	}else if(lock->value == 0){
+		thread_wakeup(lock->thread_addr);
+	}
+
+	splx(m);
 }
 
 int
 lock_do_i_hold(struct lock *lock)
 {
-	// Write this
-
-	(void)lock;  // suppress warning until code gets written
-
-	return 1;    // dummy until code gets written
+	if(lock->value == 1){
+		return 1;
+	}else{
+		return 0;
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -176,9 +188,9 @@ cv_create(const char *name)
 		kfree(cv);
 		return NULL;
 	}
-	
+
 	// add stuff here as needed
-	
+
 	return cv;
 }
 
@@ -188,7 +200,7 @@ cv_destroy(struct cv *cv)
 	assert(cv != NULL);
 
 	// add stuff here as needed
-	
+
 	kfree(cv->name);
 	kfree(cv);
 }
