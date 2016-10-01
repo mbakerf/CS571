@@ -20,7 +20,7 @@
 #include <thread.h>
 #include <stdio.h>
 
-typedef enum {SE, SW, NE, NW} Direction;
+typedef enum {SE=0, SW=1, NE=2, NW=3} Direction;
 typedef enum {STRAIGHT, LEFT, RIGHT} Action;
 
 typedef struct Cars {
@@ -171,23 +171,21 @@ approachintersection(Car * car,
 {
         int cardirection;
 
-        printf("CAR: \nnumber:\napproach: \n");
-
-        /*
-         * Avoid unused variable and function warnings.
-         */
-
-        (void) car;
-        (void) carnumber;
-	(void) gostraight;
-	(void) turnleft;
-	(void) turnright;
-
         /*
          * cardirection is set randomly.
          */
 
         cardirection = random() % 4;
+
+        if(car->action == STRAIGHT){
+          gostraight(cardirection, car->approach);
+        }
+        else if(car->action == LEFT){
+          turnleft(cardirection, car->approach);
+        }
+        else if(car->action == RIGHT){
+          turnright(cardirection, car->approach);
+        }
 }
 
 
@@ -229,12 +227,7 @@ createcars(int nargs,
             Car car;
             car.number = index;
             car.approach = NW;
-            car.dest = SW;
             car.action = STRAIGHT;
-
-            while(car.dest != car.approach){
-              car.dest = SE;
-            }
 
 
             error = thread_fork("approachintersection thread",
