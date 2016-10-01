@@ -40,7 +40,7 @@ static struct lock *se_lock;
  * Number of cars created.
  */
 
-#define NCARS 5
+#define NCARS 20
 
 
 /*
