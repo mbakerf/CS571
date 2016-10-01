@@ -136,7 +136,8 @@ lock_acquire(struct lock *lock)
 	int m = splhigh();
 
 	if(lock->value == 1){
-		lock->thread_addr = thread_sleep(curthread);
+		lock->thread_addr = &curthread;
+		thread_sleep(curthread);
 	}else if(lock->value == 0){
 		lock->value = 1;
 	}
