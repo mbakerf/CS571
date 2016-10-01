@@ -1,0 +1,5 @@
+1. Cars stop at the intersection in a first-come first-serve manner where they acquire the intersection lock. The car that acquires the lock successfully can enter the intersection and then release the lock when leaving the intersection. The other cars wait until the car who entered the intersection releases the lock.
+This design wouldn't allow for max concurrency, only one car would enter the intersection at a time because one car would acquire the lock and the other car would have to wait.
+For example, if a car comes from the North and a car comes from the South at the same time, only one car would be allowed to enter in the intersection at a time since there is only one lock.
+
+2. If all cars entered the intersection at the same time and all needed to go straight through, a deadlock would occur.
