@@ -115,6 +115,7 @@ lock_create(const char *name)
 	}
 
 	// add stuff here as needed
+	lock->value = 0;
 
 	return lock;
 }
@@ -140,7 +141,7 @@ lock_acquire(struct lock *lock)
 
 	spl = splhigh();
 	while (lock->value==1) {
-		thread_sleep(curthread);
+		thread_sleep(curthread->t_sleepaddr);
 	}
 	assert(lock->value == 0);
 	lock->value = 1;
