@@ -23,10 +23,10 @@ struct lock dir_to_lock(int dir);
 
 typedef enum {SE=0, SW=1, NE=2, NW=3} Direction;
 
-struct lock nw_lock;
-struct lock ne_lock;
-struct lock sw_lock;
-struct lock se_lock;
+struct lock nw_lock *;
+struct lock ne_lock *;
+struct lock sw_lock *;
+struct lock se_lock *;
 
 
 /*
