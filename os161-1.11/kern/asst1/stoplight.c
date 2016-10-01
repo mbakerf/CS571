@@ -216,7 +216,6 @@ createcars(int nargs,
         (void) nargs;
         (void) args;
 
-        kprintf("nargs == %d", nargs);
 
         /*
          * Start NCARS approachintersection() threads.
@@ -224,23 +223,34 @@ createcars(int nargs,
 
         for (index = 0; index < NCARS; index++) {
 
-                error = thread_fork("approachintersection thread",
-                                    NULL,
-                                    index,
-                                    approachintersection,
-                                    NULL
-                                    );
+            struct car;
+            car->number = index;
+            car->approach = direction(rand() % 4);
+            car->dest = direction(rand() % 4);
+            car->action = action(rand() % 3);
+            
+            while(car->dest != car->approach){
+              car->dest = direction(rand() % 4);
+            }
 
-                /*
-                 * panic() on error.
-                 */
 
-                if (error) {
+            error = thread_fork("approachintersection thread",
+                                NULL,
+                                index,
+                                approachintersection,
+                                NULL
+                                );
 
-                        panic("approachintersection: thread_fork failed: %s\n",
-                              strerror(error)
-                              );
-                }
+            /*
+             * panic() on error.
+             */
+
+            if (error) {
+
+                    panic("approachintersection: thread_fork failed: %s\n",
+                          strerror(error)
+                          );
+            }
         }
 
         return 0;
