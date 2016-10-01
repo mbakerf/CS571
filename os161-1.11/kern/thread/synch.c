@@ -166,11 +166,12 @@ int
 lock_do_i_hold(struct lock *lock)
 {
 	kprintf("LOCK_DO_I_HOLD!");
-	if(lock->value == 1){
-		return 1;
-	}else{
-		return 0;
-	}
+	// if(lock->value == 1){
+	// 	return 1;
+	// }else{
+	// 	return 0;
+	// }
+	return 1;
 }
 
 ////////////////////////////////////////////////////////////
