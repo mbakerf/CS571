@@ -165,16 +165,18 @@ turnright(unsigned long cardirection,
 
 static
 void
-approachintersection(void * unusedpointer,
+approachintersection(void * car,
                      unsigned long carnumber)
 {
         int cardirection;
+
+
 
         /*
          * Avoid unused variable and function warnings.
          */
 
-        (void) unusedpointer;
+        (void) car;
         (void) carnumber;
 	(void) gostraight;
 	(void) turnleft;
@@ -235,7 +237,7 @@ createcars(int nargs,
 
 
             error = thread_fork("approachintersection thread",
-                                NULL,
+                                car,
                                 index,
                                 approachintersection,
                                 NULL
