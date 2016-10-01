@@ -29,6 +29,8 @@ static struct lock *ne_lock;
 static struct lock *sw_lock;
 static struct lock *se_lock;
 
+static count_straight = 0;
+
 
 /*
  *
@@ -72,7 +74,7 @@ void
 gostraight(unsigned long cardirection,
            unsigned long carnumber)
 {
-
+    count_straight++;
     if(cardirection == NW){
       lock_acquire(sw_lock);
       cardirection = SW;
@@ -105,6 +107,8 @@ gostraight(unsigned long cardirection,
       kprintf("Leaving NW: CarNum=%ul | ApproachDirection=%s | Action=Straight\n", carnumber, direction_to_string(cardirection));
       lock_release(nw_lock);
     }
+
+    count_straight--;
 
 }
 
@@ -132,11 +136,15 @@ turnleft(unsigned long cardirection,
          unsigned long carnumber)
 {
 
+    count_straight++;
+
     if(cardirection == NW){
       lock_acquire(sw_lock);
       cardirection = SW;
       kprintf("Leaving NW: CarNum=%ul | ApproachDirection=%s | Action=Left\n", carnumber, direction_to_string(cardirection));
       lock_release(nw_lock);
+      count_straight--;
+      count_straight++;
       lock_acquire(se_lock);
       kprintf("Leaving SW: CarNum=%ul | ApproachDirection=%s | Action=Left\n", carnumber, direction_to_string(cardirection));
       lock_release(sw_lock);
@@ -148,6 +156,8 @@ turnleft(unsigned long cardirection,
       cardirection = SE;
       kprintf("Leaving SW: CarNum=%ul | ApproachDirection=%s | Action=Straight\n", carnumber, direction_to_string(cardirection));
       lock_release(sw_lock);
+      count_straight--;
+      count_straight++;
       lock_acquire(ne_lock);
       kprintf("Leaving SE: CarNum=%ul | ApproachDirection=%s | Action=Straight\n", carnumber, direction_to_string(cardirection));
       lock_release(se_lock);
@@ -159,6 +169,8 @@ turnleft(unsigned long cardirection,
       cardirection = NE;
       kprintf("Leaving SE: CarNum=%ul | ApproachDirection=%s | Action=Straight\n", carnumber, direction_to_string(cardirection));
       lock_release(se_lock);
+      count_straight--;
+      count_straight++;
       lock_acquire(nw_lock);
       kprintf("Leaving NE: CarNum=%ul | ApproachDirection=%s | Action=Straight\n", carnumber, direction_to_string(cardirection));
       lock_release(ne_lock);
@@ -176,6 +188,8 @@ turnleft(unsigned long cardirection,
       kprintf("Leaving SW: CarNum=%ul | ApproachDirection=%s | Action=Left\n", carnumber, direction_to_string(cardirection));
       lock_release(sw_lock);
     }
+
+    count_straight--;
 }
 
 
@@ -257,20 +271,28 @@ approachintersection(void * unusedpointer,
         kprintf("Approaching: CarNum=%ul | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
 
         if(cardirection==NW){
-          lock_acquire(nw_lock);
-          kprintf("Entered NW: CarNum=%ul | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+          if((caraction == 0 || caraction == 1) && count_straight < 3){
+              lock_acquire(nw_lock);
+              kprintf("Entered NW: CarNum=%ul | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+            }
         }
         else if(cardirection==NE){
-          lock_acquire(ne_lock);
-          kprintf("Entered NE: CarNum=%ul | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+          if((caraction == 0 || caraction == 1) && count_straight < 3){
+              lock_acquire(ne_lock);
+              kprintf("Entered NE: CarNum=%ul | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+          }
         }
         else if(cardirection==SW){
-          lock_acquire(sw_lock);
-          kprintf("Entered SW: CarNum=%ul | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+          if((caraction == 0 || caraction == 1) && count_straight < 3){
+            lock_acquire(sw_lock);
+            kprintf("Entered SW: CarNum=%ul | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+          }
         }
         else if(cardirection==SE){
-          lock_acquire(se_lock);
-          kprintf("Entered SE: CarNum=%ul | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+          if((caraction == 0 || caraction == 1) && count_straight < 3){
+            lock_acquire(se_lock);
+            kprintf("Entered SE: CarNum=%ul | ApproachDirection=%s | Action=%s\n", carnumber, direction_to_string(cardirection), action_to_string(caraction));
+          }
         }
 
         if(caraction == 0){
