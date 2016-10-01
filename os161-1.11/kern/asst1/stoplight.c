@@ -19,8 +19,8 @@
 #include <test.h>
 #include <thread.h>
 
-enum direction {SE, SW, NE, NW};
-enum action {STRAIGHT, LEFT, RIGHT};
+typedef enum {SE, SW, NE, NW} direction;
+typedef enum {STRAIGHT, LEFT, RIGHT} action;
 
 struct car {
   int number;
