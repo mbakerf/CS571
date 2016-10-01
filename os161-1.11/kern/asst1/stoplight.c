@@ -74,21 +74,29 @@ gostraight(unsigned long cardirection,
       lock_acquire(sw_lock);
       cardirection = SW;
       lock_release(nw_lock);
+      lock_release(sw_lock);
+      kprintf("Leaving SW: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
     else if(cardirection == SW){
       lock_acquire(se_lock);
       cardirection = SE;
       lock_release(sw_lock);
+      lock_release(se_lock);
+      kprintf("Leaving SE: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
     else if(cardirection == SE){
       lock_acquire(ne_lock);
       cardirection = NE;
       lock_release(se_lock);
+      lock_release(ne_lock);
+      kprintf("Leaving NE: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
     else if(cardirection == NE){
       lock_acquire(nw_lock);
       cardirection = NW;
       lock_release(ne_lock);
+      lock_release(nw_lock);
+      kprintf("Leaving NW: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
 
 }
@@ -116,21 +124,42 @@ void
 turnleft(unsigned long cardirection,
          unsigned long carnumber)
 {
+
     if(cardirection == NW){
-      gostraight(cardirection, carnumber);
-      gostraight(SW, carnumber);
+      lock_acquire(sw_lock);
+      cardirection = SW;
+      lock_release(nw_lock);
+      lock_acquire(se_lock);
+      lock_release(sw_lock);
+      lock_release(se_lock);
+      kprintf("Leaving SE: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
     else if(cardirection == SW){
-      gostraight(cardirection, carnumber);
-      gostraight(SE, carnumber);
+      lock_acquire(se_lock);
+      cardirection = SE;
+      lock_release(sw_lock);
+      lock_acquire(ne_lock);
+      lock_release(se_lock);
+      lock_release(ne_lock);
+      kprintf("Leaving NE: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
     else if(cardirection == SE){
-      gostraight(cardirection, carnumber);
-      gostraight(NE, carnumber);
+      lock_acquire(ne_lock);
+      cardirection = NE;
+      lock_release(se_lock);
+      lock_acquire(nw_lock);
+      lock_release(ne_lock);
+      lock_release(nw_lock);
+      kprintf("Leaving NW: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
     else if(cardirection == NE){
-      gostraight(cardirection, carnumber);
-      gostraight(NW, carnumber);
+      lock_acquire(nw_lock);
+      cardirection = NW;
+      lock_release(ne_lock);
+      lock_acquire(sw_lock);
+      lock_release(nw_lock);
+      lock_release(sw_lock);
+      kprintf("Leaving SW: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
 }
 
@@ -159,15 +188,19 @@ turnright(unsigned long cardirection,
 {
     if(cardirection == NW){
       lock_release(nw_lock);
+      kprintf("Leaving NW: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
     else if(cardirection == SW){
       lock_release(sw_lock);
+      kprintf("Leaving SW: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
     else if(cardirection == SE){
       lock_release(se_lock);
+      kprintf("Leaving SE: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
     else if(cardirection == NE){
       lock_release(ne_lock);
+      kprintf("Leaving NE: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
     }
 }
 
@@ -206,19 +239,23 @@ approachintersection(void * unusedpointer,
         cardirection = random() % 4;
         caraction = random() % 3;
 
-        kprintf("CarNum=%ul | ApproachDirection=%d", carnumber, cardirection);
+        kprintf("Approaching: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
 
         if(cardirection==NW){
           lock_acquire(nw_lock);
+          kprintf("Entered NW: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
         }
         else if(cardirection==NE){
           lock_acquire(ne_lock);
+          kprintf("Entered NE: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
         }
         else if(cardirection==SW){
           lock_acquire(sw_lock);
+          kprintf("Entered SW: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
         }
         else if(cardirection==SE){
           lock_acquire(se_lock);
+          kprintf("Entered SE: CarNum=%ul | ApproachDirection=%d\n", carnumber, cardirection);
         }
 
         if(caraction == 0){
