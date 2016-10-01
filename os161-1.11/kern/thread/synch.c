@@ -133,7 +133,7 @@ lock_destroy(struct lock *lock)
 void
 lock_acquire(struct lock *lock)
 {
-	kprintf("ACQUIRE!");
+	kprintf("ACQUIRE123!");
 	int m = splhigh();
 
 	if(lock->value == 1){
@@ -150,7 +150,7 @@ lock_acquire(struct lock *lock)
 void
 lock_release(struct lock *lock)
 {
-	kprintf("RELEASE!");
+	kprintf("RELEASE123!");
 	int m = splhigh();
 
 	if(lock->value == 1){
@@ -165,7 +165,7 @@ lock_release(struct lock *lock)
 int
 lock_do_i_hold(struct lock *lock)
 {
-	kprintf("LOCK_DO_I_HOLD!");
+	kprintf("LOCK_DO_I_HOLD123!");
 	// if(lock->value == 1){
 	// 	return 1;
 	// }else{
