@@ -139,11 +139,11 @@ lock_acquire(struct lock *lock)
 	assert(in_interrupt==0);
 
 	spl = splhigh();
-	while (lock->value==0) {
+	while (lock->value==1) {
 		thread_sleep(curthread);
 	}
-	assert(lock->value>0);
-	lock->value--;
+	assert(lock->value == 0);
+	lock->value = 1;
 	splx(spl);
 }
 
