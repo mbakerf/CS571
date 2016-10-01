@@ -237,7 +237,7 @@ createcars(int nargs,
 
 
             error = thread_fork("approachintersection thread",
-                                car,
+                                &car,
                                 index,
                                 approachintersection,
                                 NULL
