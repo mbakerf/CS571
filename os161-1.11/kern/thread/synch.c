@@ -142,7 +142,7 @@ lock_acquire(struct lock *lock)
 		lock->value = 1;
 	}
 
-	splx(m);
+	spl0();
 }
 
 void
@@ -155,8 +155,7 @@ lock_release(struct lock *lock)
 	}else if(lock->value == 0){
 		thread_wakeup(lock->thread_addr);
 	}
-
-	splx(m);
+	spl0();
 }
 
 int
