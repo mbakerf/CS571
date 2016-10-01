@@ -193,7 +193,8 @@ approachintersection(Car * car,
 
         cardirection = random() % 4;
 
-        lock_acquire(dir_to_lock(cardirection));
+        struct lock = dir_to_lock(cardirection);
+        lock_acquire(lock);
 
         if(car->action == STRAIGHT){
           gostraight(cardirection, car->approach);
@@ -220,9 +221,6 @@ dir_to_lock(int dir){
   }
   else if(dir==SE){
     return &se_lock;
-  }
-  else{
-    return -1;
   }
 }
 
