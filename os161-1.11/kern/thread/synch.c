@@ -134,7 +134,7 @@ lock_destroy(struct lock *lock)
 void
 lock_acquire(struct lock *lock)
 {
-	kprintf("Making sure locks are not null %s", "123");
+	// kprintf("Making sure locks are not null %s", "123");
 	int spl;
 
 	// assert(lock != NULL);
