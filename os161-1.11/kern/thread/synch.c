@@ -141,20 +141,23 @@ lock_acquire(struct lock *lock)
 
 	spl = splhigh();
 	while (lock->value==1) {
+		lock->thread_addr = curthread->t_sleepaddr;
 	 	thread_sleep(curthread->t_sleepaddr);
 	}
-	// assert(lock->value == 0);
+	assert(lock->value == 0);
 	lock->value = 1;
 	splx(spl);
-	// (void)lock;
 }
 
 void
 lock_release(struct lock *lock)
 {
-	// Write this
-
-	(void)lock;  // suppress warning until code gets written
+	int spl;
+	assert(lock != NULL);
+	spl = splhigh();
+	lock->value = 0;
+	thread_wakeup(lock->thread_addr);
+	splx(spl);
 }
 
 int
