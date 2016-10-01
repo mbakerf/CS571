@@ -19,7 +19,7 @@
 #include <test.h>
 #include <thread.h>
 
-struct lock dir_to_lock(int dir);
+// struct lock dir_to_lock(int dir);
 
 typedef enum {SE=0, SW=1, NE=2, NW=3} Direction;
 
@@ -199,20 +199,20 @@ approachintersection(void * unusedpointer,
 }
 
 
-struct lock* dir_to_lock(int dir){
-  if(dir==NW){
-    return &nw_lock;
-  }
-  else if(dir==NE){
-    return &ne_lock;
-  }
-  else if(dir==SW){
-    return &sw_lock;
-  }
-  else if(dir==SE){
-    return &se_lock;
-  }
-}
+// struct lock* dir_to_lock(int dir){
+//   if(dir==NW){
+//     return &nw_lock;
+//   }
+//   else if(dir==NE){
+//     return &ne_lock;
+//   }
+//   else if(dir==SW){
+//     return &sw_lock;
+//   }
+//   else if(dir==SE){
+//     return &se_lock;
+//   }
+// }
 
 /*
  * createcars()
