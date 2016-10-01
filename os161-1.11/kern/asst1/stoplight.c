@@ -170,7 +170,7 @@ approachintersection(void * car,
 {
         int cardirection;
 
-        kprintf("CAR: \nnumber:%d\napproach: %s\n", car.number, car.approach);
+        kprintf("CAR: \nnumber:%d\napproach: %s\n", car->number, car->approach);
 
         /*
          * Avoid unused variable and function warnings.
