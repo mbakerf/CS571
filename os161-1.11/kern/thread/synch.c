@@ -134,7 +134,7 @@ void
 lock_acquire(struct lock *lock)
 {
 	kprintf("ACQUIRE!");
-	splhigh();
+	int m = splhigh();
 
 	if(lock->value == 1){
 		lock->thread_addr = &curthread;
@@ -144,7 +144,7 @@ lock_acquire(struct lock *lock)
 		lock->value = 1;
 	}
 
-	splx(0);
+	splx(m);
 }
 
 void
