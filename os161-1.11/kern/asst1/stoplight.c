@@ -18,7 +18,6 @@
 #include <lib.h>
 #include <test.h>
 #include <thread.h>
-#include <stdio.h>
 
 typedef enum {SE=0, SW=1, NE=2, NW=3} Direction;
 typedef enum {STRAIGHT, LEFT, RIGHT} Action;
